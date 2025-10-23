@@ -42,6 +42,4 @@ This repository will host the migrated components and modules from the previous 
 
 ## 🚀 Running locally
 
-```bash
-npm install
-npm run dev
+
