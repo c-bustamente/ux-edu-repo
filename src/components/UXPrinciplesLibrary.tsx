@@ -1,4 +1,6 @@
+// src/components/UXPrinciplesLibrary.tsx
 "use client";
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
@@ -6,279 +8,406 @@ import { Input } from "./ui/input";
 import { Search } from "lucide-react";
 import { useState } from "react";
 
+type Difficulty = "Beginner" | "Intermediate" | "Advanced";
+
 type Item = {
   title: string;
   description: string;
-  category: string;
-  difficulty: "Beginner" | "Intermediate" | "Advanced";
+  category: "Usability" | "Visual Design" | "Psychology" | "Evaluation";
+  difficulty: Difficulty;
   url: string;
-  source?: "ERS" | "NN/g" | "IxDF";
+  tags: string[];
 };
 
 export function UXPrinciplesLibrary() {
   const [searchTerm, setSearchTerm] = useState("");
 
   const principles: Record<"usability" | "visual" | "psychology" | "evaluation", Item[]> = {
+    // ===================== USABILITY =====================
     usability: [
+      // Laws of UX (Usability bucket)
       {
         title: "Jakob's Law",
         description:
-          "Users spend most of their time on other sites, so they prefer your site to work the same way as all the other sites they already know.",
-        category: "Navigation",
+          "Users prefer your product to behave like other familiar products they already use.",
+        category: "Usability",
         difficulty: "Beginner",
         url: "https://lawsofux.com/jakobs-law/",
+        tags: ["consistency", "familiarity", "mental-models", "navigation"]
       },
       {
         title: "Fitts's Law",
         description:
-          "The time to acquire a target is a function of the distance to and size of the target.",
-        category: "Interaction",
+          "Time to acquire a target depends on its size and distance; larger, closer targets are faster to reach.",
+        category: "Usability",
         difficulty: "Intermediate",
         url: "https://lawsofux.com/fittss-law/",
+        tags: ["target-size", "interaction", "efficiency", "accessibility"]
       },
       {
-        title: "Miller's Rule",
+        title: "Miller's Law",
         description:
-          "The average person can only keep 7 (±2) items in their working memory.",
-        category: "Information Architecture",
+          "Working memory holds about 7±2 items; chunk and group to reduce cognitive load.",
+        category: "Usability",
         difficulty: "Beginner",
         url: "https://lawsofux.com/millers-law/",
+        tags: ["cognitive-load", "memory", "chunking", "simplicity"]
       },
       {
         title: "Hick’s Law",
         description:
-          "The time it takes to make a decision increases with the number and complexity of choices.",
-        category: "Decision Making",
+          "Decision time increases with number and complexity of choices; simplify and prioritize.",
+        category: "Usability",
         difficulty: "Intermediate",
         url: "https://lawsofux.com/hicks-law/",
+        tags: ["choice-overload", "decision-making", "simplicity", "navigation"]
       },
       {
-        title: "Tesler’s Law (Law of Conservation of Complexity)",
+        title: "Tesler’s Law",
         description:
-          "Every application has an irreducible amount of complexity; the question is who handles it — user or developer.",
-        category: "Design Efficiency",
+          "Complexity is conserved: decide whether the system or the user carries it.",
+        category: "Usability",
         difficulty: "Advanced",
         url: "https://lawsofux.com/teslers-law/",
+        tags: ["complexity-management", "design-tradeoffs", "efficiency"]
       },
       {
         title: "Doherty Threshold",
         description:
-          "Productivity improves when system and user interact at a pace (<400 ms) where neither waits on the other.",
-        category: "Interaction Speed",
+          "Keep system response under ~400ms so neither user nor system is waiting.",
+        category: "Usability",
         difficulty: "Intermediate",
         url: "https://lawsofux.com/doherty-threshold/",
+        tags: ["performance", "responsiveness", "feedback", "latency"]
       },
+
+      // Nielsen’s 10 Heuristics
+      {
+        title: "Visibility of System Status",
+        description:
+          "Always keep users informed about what’s going on with timely and appropriate feedback.",
+        category: "Usability",
+        difficulty: "Beginner",
+        url: "https://www.nngroup.com/articles/ten-usability-heuristics/",
+        tags: ["feedback", "system-status", "visibility", "progress"]
+      },
+      {
+        title: "Match Between System and the Real World",
+        description:
+          "Use concepts and language familiar to users; follow real-world conventions.",
+        category: "Usability",
+        difficulty: "Beginner",
+        url: "https://www.nngroup.com/articles/ten-usability-heuristics/",
+        tags: ["real-world", "language", "mental-models", "affordances"]
+      },
+      {
+        title: "User Control and Freedom",
+        description:
+          "Provide clearly marked exits, undo/redo, and easy recovery from unwanted actions.",
+        category: "Usability",
+        difficulty: "Beginner",
+        url: "https://www.nngroup.com/articles/ten-usability-heuristics/",
+        tags: ["undo-redo", "user-control", "freedom", "navigation"]
+      },
+      {
+        title: "Consistency and Standards",
+        description:
+          "Follow platform and web conventions; be consistent in wording and behavior.",
+        category: "Usability",
+        difficulty: "Beginner",
+        url: "https://www.nngroup.com/articles/ten-usability-heuristics/",
+        tags: ["consistency", "standards", "predictability"]
+      },
+      {
+        title: "Error Prevention",
+        description:
+          "Prevent problems by design using constraints, confirmations, and sensible defaults.",
+        category: "Usability",
+        difficulty: "Intermediate",
+        url: "https://www.nngroup.com/articles/ten-usability-heuristics/",
+        tags: ["error-prevention", "validation", "defaults", "safety"]
+      },
+      {
+        title: "Recognition Rather Than Recall",
+        description:
+          "Make options and objects visible; reduce memory load with cues and references.",
+        category: "Usability",
+        difficulty: "Beginner",
+        url: "https://www.nngroup.com/articles/ten-usability-heuristics/",
+        tags: ["recognition", "discoverability", "cognitive-load"]
+      },
+      {
+        title: "Flexibility and Efficiency of Use",
+        description:
+          "Provide accelerators for experts (shortcuts) without harming novice learnability.",
+        category: "Usability",
+        difficulty: "Intermediate",
+        url: "https://www.nngroup.com/articles/ten-usability-heuristics/",
+        tags: ["shortcuts", "efficiency", "power-users", "personalization"]
+      },
+      {
+        title: "Aesthetic and Minimalist Design",
+        description:
+          "Remove irrelevant information; keep interfaces clean and focused.",
+        category: "Usability",
+        difficulty: "Beginner",
+        url: "https://www.nngroup.com/articles/ten-usability-heuristics/",
+        tags: ["minimalism", "clarity", "signal-to-noise", "visual-hierarchy"]
+      },
+      {
+        title: "Help Users Recognize, Diagnose, and Recover from Errors",
+        description:
+          "Use plain-language error messages and suggest constructive solutions.",
+        category: "Usability",
+        difficulty: "Intermediate",
+        url: "https://www.nngroup.com/articles/ten-usability-heuristics/",
+        tags: ["error-recovery", "guidance", "plain-language"]
+      },
+      {
+        title: "Help and Documentation",
+        description:
+          "Offer searchable, task-focused help and documentation when needed.",
+        category: "Usability",
+        difficulty: "Beginner",
+        url: "https://www.nngroup.com/articles/ten-usability-heuristics/",
+        tags: ["documentation", "help", "support", "onboarding"]
+      }
     ],
 
+    // ===================== VISUAL DESIGN =====================
     visual: [
       {
         title: "Law of Proximity",
-        description:
-          "Objects near each other are perceived as grouped.",
-        category: "Visual Hierarchy",
+        description: "Elements that are close to each other are perceived as a group.",
+        category: "Visual Design",
         difficulty: "Beginner",
         url: "https://lawsofux.com/law-of-proximity/",
+        tags: ["visual-grouping", "spacing", "gestalt", "layout"]
       },
       {
         title: "Law of Similarity",
-        description:
-          "Elements sharing visual characteristics are perceived as related.",
-        category: "Visual Hierarchy",
+        description: "Similar elements are perceived as related or part of the same group.",
+        category: "Visual Design",
         difficulty: "Beginner",
         url: "https://lawsofux.com/law-of-similarity/",
+        tags: ["visual-similarity", "grouping", "gestalt", "styles"]
       },
       {
         title: "Von Restorff Effect",
-        description:
-          "Among similar items, the one that differs is more likely to be remembered.",
-        category: "Attention",
+        description: "An item that stands out is more likely to be remembered.",
+        category: "Visual Design",
         difficulty: "Intermediate",
         url: "https://lawsofux.com/von-restorff-effect/",
+        tags: ["salience", "attention", "highlighting", "contrast"]
       },
       {
         title: "Law of Prägnanz",
-        description:
-          "People interpret complex images in the simplest forms possible.",
-        category: "Gestalt Principles",
+        description: "People perceive complex images in the simplest form possible.",
+        category: "Visual Design",
         difficulty: "Intermediate",
         url: "https://lawsofux.com/law-of-pragnanz/",
+        tags: ["simplicity", "gestalt", "visual-processing"]
       },
       {
         title: "Law of Common Region",
-        description:
-          "Elements enclosed within the same region are perceived as grouped.",
-        category: "Visual Grouping",
+        description: "Elements enclosed within the same region are perceived as a group.",
+        category: "Visual Design",
         difficulty: "Beginner",
         url: "https://lawsofux.com/law-of-common-region/",
+        tags: ["visual-grouping", "regions", "borders", "cards"]
       },
       {
         title: "Law of Continuity",
-        description:
-          "Elements arranged on a line or curve are perceived as more related.",
-        category: "Visual Flow",
+        description: "Elements aligned on a line or curve are perceived as related.",
+        category: "Visual Design",
         difficulty: "Intermediate",
         url: "https://lawsofux.com/law-of-continuity/",
-      },
+        tags: ["visual-flow", "alignment", "gestalt"]
+      }
     ],
 
+    // ===================== PSYCHOLOGY =====================
     psychology: [
       {
         title: "Peak-End Rule",
         description:
-          "People judge experiences largely by their peak and end moments.",
-        category: "User Experience",
+          "People judge experiences largely by their peak and end moments, rather than the total sum.",
+        category: "Psychology",
         difficulty: "Advanced",
         url: "https://lawsofux.com/peak-end-rule/",
+        tags: ["experience-memory", "moments-that-matter", "emotion"]
       },
       {
         title: "Zeigarnik Effect",
         description:
-          "Unfinished tasks are remembered better than completed ones.",
-        category: "Motivation",
+          "Unfinished tasks are remembered better than completed ones; leverage progress cues.",
+        category: "Psychology",
         difficulty: "Advanced",
         url: "https://lawsofux.com/zeigarnik-effect/",
+        tags: ["incompletion", "engagement", "progress", "motivation"]
       },
       {
         title: "Serial Position Effect",
         description:
-          "Users best remember the first and last items in a series.",
-        category: "Memory",
+          "People remember best the first and last items in a sequence (primacy/recency).",
+        category: "Psychology",
         difficulty: "Intermediate",
         url: "https://lawsofux.com/serial-position-effect/",
+        tags: ["memory", "primacy", "recency", "ordering"]
       },
       {
         title: "Aesthetic–Usability Effect",
         description:
-          "Aesthetically pleasing designs are often perceived as more usable.",
-        category: "Perception",
+          "Aesthetically pleasing designs are perceived as more usable and get the benefit of the doubt.",
+        category: "Psychology",
         difficulty: "Beginner",
         url: "https://lawsofux.com/aesthetic-usability-effect/",
+        tags: ["aesthetics", "perception", "usability-bias"]
       },
       {
         title: "Cognitive Load Theory",
         description:
-          "Learning improves when unnecessary mental effort is reduced.",
-        category: "Learning",
+          "Reduce extraneous load and support germane load to improve learning.",
+        category: "Psychology",
         difficulty: "Advanced",
         url: "https://lawsofux.com/cognitive-load/",
+        tags: ["cognitive-load", "learning", "simplicity", "scaffolding"]
       },
       {
         title: "Goal-Gradient Effect",
         description:
-          "Behavior accelerates as users feel closer to a goal.",
-        category: "Motivation",
+          "Motivation increases as people feel closer to completing a goal.",
+        category: "Psychology",
         difficulty: "Intermediate",
         url: "https://lawsofux.com/goal-gradient-effect/",
+        tags: ["motivation", "goals", "progress", "engagement"]
       },
+      // Pekrun (Control-Value Theory)
+      {
+        title: "Control Appraisal (Pekrun)",
+        description:
+          "Positive achievement emotions arise when learners perceive high control over outcomes and tasks.",
+        category: "Psychology",
+        difficulty: "Intermediate",
+        url: "https://doi.org/10.1016/j.edurev.2006.04.001",
+        tags: ["control", "autonomy", "self-efficacy", "achievement-emotions"]
+      },
+      {
+        title: "Value Appraisal (Pekrun)",
+        description:
+          "Engagement increases when tasks are perceived as valuable, meaningful, or interesting.",
+        category: "Psychology",
+        difficulty: "Intermediate",
+        url: "https://doi.org/10.1016/j.edurev.2006.04.001",
+        tags: ["value", "relevance", "intrinsic-motivation", "engagement"]
+      }
     ],
 
+    // ===================== EVALUATION =====================
     evaluation: [
-      // ---------- ERS / EXPRESSO methods (verified) ----------
       {
         title: "2DES",
         description:
           "Continuous self-report of emotion along valence–arousal while interacting with a stimulus.",
-        category: "Self-report / Emotions",
+        category: "Evaluation",
         difficulty: "Intermediate",
         url: "https://experienceresearchsociety.org/ux-methods/2des/",
-        source: "ERS",
+        tags: ["self-report", "emotion", "arousal", "valence"]
       },
       {
         title: "3E (Expressing Experiences and Emotions)",
         description:
           "Participants draw/write experiences and emotions on a template during field studies.",
-        category: "Diary / Field",
+        category: "Evaluation",
         difficulty: "Beginner",
         url: "https://experienceresearchsociety.org/ux-methods/3e-expressing-experiences-and-emotions/",
-        source: "ERS",
+        tags: ["diary-study", "field", "emotion", "qualitative"]
       },
       {
         title: "AttrakDiff",
         description:
           "Questionnaire measuring pragmatic and hedonic UX qualities via semantic differentials.",
-        category: "Questionnaire",
+        category: "Evaluation",
         difficulty: "Beginner",
         url: "https://experienceresearchsociety.org/ux-methods/attrakdiff/",
-        source: "ERS",
+        tags: ["questionnaire", "hedonic", "pragmatic", "measurement"]
       },
       {
         title: "Experience Clip",
         description:
           "Peer-filmed video clips of real-world mobile use to capture authentic experiences.",
-        category: "Field / Video",
+        category: "Evaluation",
         difficulty: "Intermediate",
         url: "https://experienceresearchsociety.org/ux-methods/experience-clip/",
-        source: "ERS",
+        tags: ["field-video", "context-of-use", "qualitative"]
       },
       {
         title: "Mental Mapping",
         description:
           "Participants map a design to famous people/films to surface experiential associations.",
-        category: "Projective Technique",
+        category: "Evaluation",
         difficulty: "Intermediate",
         url: "https://experienceresearchsociety.org/ux-methods/mental-mapping/",
-        source: "ERS",
+        tags: ["projective-technique", "associations", "qualitative"]
       },
       {
         title: "UX Expert Evaluation",
         description:
           "Experts inspect a system and note hedonic/pragmatic findings, often guided by heuristics.",
-        category: "Expert Review",
+        category: "Evaluation",
         difficulty: "Intermediate",
         url: "https://experienceresearchsociety.org/ux-methods/ux-expert-evaluation/",
-        source: "ERS",
+        tags: ["expert-review", "heuristics", "inspection"]
       },
-
-      // ---------- Widely used UX methods (external, verified) ----------
       {
         title: "Usability Testing",
         description:
           "Observe representative users performing tasks; measure effectiveness, efficiency, satisfaction.",
-        category: "User-Based",
+        category: "Evaluation",
         difficulty: "Beginner",
         url: "https://www.nngroup.com/articles/usability-testing-101/",
-        source: "NN/g",
+        tags: ["user-testing", "task-performance", "qualitative", "metrics"]
       },
       {
         title: "A/B Testing",
         description:
-          "Run controlled experiments comparing design variants with live users to optimize key metrics.",
-        category: "Quantitative",
+          "Run controlled experiments comparing design variants to optimize key metrics.",
+        category: "Evaluation",
         difficulty: "Intermediate",
         url: "https://www.nngroup.com/articles/ab-testing/",
-        source: "NN/g",
+        tags: ["experimentation", "quantitative", "optimization"]
       },
       {
         title: "Cognitive Walkthrough",
         description:
-          "Structured, task-based expert review focused on learnability for first-time users.",
-        category: "Expert Review",
+          "Structured expert review focused on learnability for first-time use and task flows.",
+        category: "Evaluation",
         difficulty: "Intermediate",
         url: "https://www.nngroup.com/articles/cognitive-walkthroughs/",
-        source: "NN/g",
+        tags: ["expert-review", "learnability", "task-analysis"]
       },
       {
         title: "Think-Aloud Protocol",
         description:
           "Participants verbalize thoughts during tasks to reveal reasoning and confusion.",
-        category: "Qualitative",
+        category: "Evaluation",
         difficulty: "Intermediate",
         url: "https://www.nngroup.com/articles/thinking-aloud-the-1-usability-tool/",
-        source: "NN/g",
+        tags: ["qualitative", "verbalization", "user-research"]
       },
       {
         title: "Tree Testing",
         description:
-          "Evaluate findability in an IA by testing whether users can locate items in a text-only hierarchy.",
-        category: "Information Architecture",
+          "Evaluate findability in an information architecture using text-only navigation trees.",
+        category: "Evaluation",
         difficulty: "Intermediate",
         url: "https://www.interaction-design.org/literature/article/tree-testing-ux",
-        source: "IxDF",
-      },
-    ],
+        tags: ["information-architecture", "findability", "navigation"]
+      }
+    ]
   };
 
-  const getDifficultyColor = (difficulty: Item["difficulty"]) => {
+  const getDifficultyColor = (difficulty: Difficulty) => {
     switch (difficulty) {
       case "Beginner":
         return "bg-green-100 text-green-800";
@@ -294,11 +423,12 @@ export function UXPrinciplesLibrary() {
   const filterItems = (list: Item[]) => {
     if (!searchTerm) return list;
     const q = searchTerm.toLowerCase();
-    return list.filter((p) =>
-      p.title.toLowerCase().includes(q) ||
-      p.description.toLowerCase().includes(q) ||
-      p.category.toLowerCase().includes(q) ||
-      (p.source ?? "").toLowerCase().includes(q)
+    return list.filter(
+      (p) =>
+        p.title.toLowerCase().includes(q) ||
+        p.description.toLowerCase().includes(q) ||
+        p.category.toLowerCase().includes(q) ||
+        p.tags.some((tag) => tag.toLowerCase().includes(q))
     );
   };
 
@@ -309,11 +439,10 @@ export function UXPrinciplesLibrary() {
         <p className="text-muted-foreground mb-6">
           Discover foundational principles and methods that guide effective user experience design.
         </p>
-
         <div className="relative max-w-md">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
           <Input
-            placeholder="Search (e.g., “Quantitative”, “ERS”, “Expert Review”)..."
+            placeholder="Search by title, description, or tag..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="pl-10"
@@ -326,14 +455,13 @@ export function UXPrinciplesLibrary() {
           <TabsTrigger value="usability">Usability</TabsTrigger>
           <TabsTrigger value="visual">Visual Design</TabsTrigger>
           <TabsTrigger value="psychology">Psychology</TabsTrigger>
-          <TabsTrigger value="evaluation">UX Evaluation Methods</TabsTrigger>
+          <TabsTrigger value="evaluation">Evaluation</TabsTrigger>
         </TabsList>
 
-        {/* USABILITY / VISUAL / PSYCHOLOGY */}
         {(["usability", "visual", "psychology"] as const).map((key) => (
           <TabsContent key={key} value={key} className="space-y-4">
             <h2 className="text-xl font-semibold capitalize">
-              {key.charAt(0).toUpperCase() + key.slice(1)} Principles
+              {key === "visual" ? "Visual Design" : key.charAt(0).toUpperCase() + key.slice(1)}
             </h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
               {filterItems(principles[key]).map((item, index) => (
@@ -347,21 +475,20 @@ export function UXPrinciplesLibrary() {
                   <Card className="h-full hover:shadow-lg transition-shadow">
                     <CardHeader>
                       <div className="flex justify-between items-start gap-3">
-                        <CardTitle className="text-lg text-blue-600 underline">
-                          {item.title}
-                        </CardTitle>
-                        <Badge className={getDifficultyColor(item.difficulty)}>
-                          {item.difficulty}
-                        </Badge>
+                        <CardTitle className="text-lg text-blue-600 underline">{item.title}</CardTitle>
+                        <Badge className={getDifficultyColor(item.difficulty)}>{item.difficulty}</Badge>
                       </div>
                       <div className="flex items-center gap-2 flex-wrap">
                         <Badge variant="outline">{item.category}</Badge>
+                        {item.tags.map((tag, i) => (
+                          <Badge key={i} variant="secondary" className="text-xs">
+                            {tag}
+                          </Badge>
+                        ))}
                       </div>
                     </CardHeader>
                     <CardContent>
-                      <CardDescription className="text-sm">
-                        {item.description}
-                      </CardDescription>
+                      <CardDescription className="text-sm">{item.description}</CardDescription>
                     </CardContent>
                   </Card>
                 </a>
@@ -370,21 +497,8 @@ export function UXPrinciplesLibrary() {
           </TabsContent>
         ))}
 
-        {/* EVALUATION */}
         <TabsContent value="evaluation" className="space-y-4">
-          <h2 className="text-xl font-semibold">UX Evaluation Methods</h2>
-          <p className="text-muted-foreground">
-            This section integrates methods from the{" "}
-            <a
-              href="https://experienceresearchsociety.org/ux/evaluation-methods/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-600 underline"
-            >
-              Experience Research Society (EXPRESSO)
-            </a>{" "}
-            and widely used UX research methods with authoritative references.
-          </p>
+          <h2 className="text-xl font-semibold">Evaluation</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
             {filterItems(principles.evaluation).map((method, index) => (
               <a
@@ -397,26 +511,20 @@ export function UXPrinciplesLibrary() {
                 <Card className="h-full hover:shadow-lg transition-shadow">
                   <CardHeader>
                     <div className="flex justify-between items-start gap-3">
-                      <CardTitle className="text-lg text-blue-600 underline">
-                        {method.title}
-                      </CardTitle>
-                      <Badge className={getDifficultyColor(method.difficulty)}>
-                        {method.difficulty}
-                      </Badge>
+                      <CardTitle className="text-lg text-blue-600 underline">{method.title}</CardTitle>
+                      <Badge className={getDifficultyColor(method.difficulty)}>{method.difficulty}</Badge>
                     </div>
                     <div className="flex items-center gap-2 flex-wrap">
                       <Badge variant="outline">{method.category}</Badge>
-                      {method.source && (
-                        <Badge variant="outline">
-                          Source: {method.source}
+                      {method.tags.map((tag, i) => (
+                        <Badge key={i} variant="secondary" className="text-xs">
+                          {tag}
                         </Badge>
-                      )}
+                      ))}
                     </div>
                   </CardHeader>
                   <CardContent>
-                    <CardDescription className="text-sm">
-                      {method.description}
-                    </CardDescription>
+                    <CardDescription className="text-sm">{method.description}</CardDescription>
                   </CardContent>
                 </Card>
               </a>

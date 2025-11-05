@@ -75,7 +75,7 @@ export const recommendationRules: Recommendation[] = [
     example: <FacetedSearchExample />,
     reference: [
       { title: "NN/g — Site Search Suggestions", url: "https://www.nngroup.com/articles/site-search-suggestions/" },
-      { title: "NN/g — Faceted Search", url: "https://www.nngroup.com/articles/faceted-search/" }
+      { title: "NN/g — Faceted Search", url: "https://www.nngroup.com/articles/mobile-faceted-search/" }// no funciona el link ---> existe el mobile facted search pero no el web
     ]
   },
   {
@@ -108,7 +108,7 @@ export const recommendationRules: Recommendation[] = [
     patterns: ["Module Navigation", "Sequential Learning Path"],
     example: <LmsModularStructureExample />,
     reference: [
-      { title: "Pástor et al. (2020) — Patterns in Instructional Design", url: "https://www.researchgate.net/publication/343857056_Patterns_in_Instructional_Design" },
+      { title: "Design patterns for building online courses in a virtual learning environment", url: "https://www.scielo.cl/scielo.php?pid=S0718-33052018000100157&script=sci_abstract&tlng=en" },//corresponde al articulo de pástor
       { title: "Instructional Design Models for Digital Learning (2024 Review)", url: "https://www.researchgate.net/publication/379238089_Instructional_Design_Models_for_Digital_Learning_in_Higher_Education" }
     ]
   },
@@ -123,8 +123,8 @@ export const recommendationRules: Recommendation[] = [
     patterns: ["Discussion Forum", "Peer Review", "Upvoting System"],
     example: <MoocForumExample />,
     reference: [
-      { title: "NN/g — Designing for Online Communities", url: "https://www.nngroup.com/articles/online-community-design/" },
-      { title: "Hew & Cheung (2014) — Student Engagement in MOOCs", url: "https://doi.org/10.1016/j.iheduc.2014.10.005" }
+      { title: "Five principles for MOOC design: With a case study", url: "https://www.researchgate.net/publication/298712549_Five_principles_for_MOOC_design_With_a_case_study" },// no funciona el link
+      { title: "Hew, K. F., Qiao, C., & Tang, Y. (2018). Understanding Student Engagement in Large-Scale Open Online Courses", url: "https://doi.org/10.19173/irrodl.v19i3.3596" }
     ]
   },
   {
@@ -138,8 +138,8 @@ export const recommendationRules: Recommendation[] = [
     patterns: ["Collaborative Whiteboard", "Breakout Rooms", "Live Polls"],
     example: <RealTimeCollabExample />,
     reference: [
-      { title: "Zhao et al. (2021) — Synchronous Online Learning Collaboration", url: "https://doi.org/10.1007/s10639-021-10452-5" },
-      { title: "NN/g — Virtual Classroom UX", url: "https://www.nngroup.com/articles/virtual-classroom-experience/" }
+      { title: "Zhao et al. (2021) — Synchronous Online Learning Collaboration", url: "https://doi.org/10.1007/s10639-021-10452-5" },// no funciona el link
+      { title: "NN/g — Virtual Classroom UX", url: "https://www.nngroup.com/articles/virtual-classroom-experience/" }// no funciona el link
     ]
   },
   {
@@ -153,8 +153,8 @@ export const recommendationRules: Recommendation[] = [
     patterns: ["Progress Dashboard", "Completion Certificates"],
     example: <CorporateDashboardExample />,
     reference: [
-      { title: "NN/g — Dashboard Design for Data and Metrics", url: "https://www.nngroup.com/articles/dashboard-design/" },
-      { title: "ASTD — Learning Analytics for Workplace Training", url: "https://www.td.org/" }
+      { title: "NN/g — Dashboards: Making Charts and Graphs Easier to Understand", url: "https://www.nngroup.com/articles/dashboards-preattentive/" },//
+      { title: "ASTD — Maximize the Value of Learning Analytics", url: "https://www.td.org/content/talent-development-leader/maximize-the-value-of-learning-analytics" } //es un link general
     ]
   },
   {
@@ -168,8 +168,8 @@ export const recommendationRules: Recommendation[] = [
     patterns: ["Hybrid Scheduling", "Attendance Sync", "Discussion Continuity"],
     example: <BlendedHybridExample />,
     reference: [
-      { title: "Graham (2013) — Emerging Practice of Blended Learning", url: "https://doi.org/10.1007/978-1-4614-3185-5_2" },
-      { title: "Educause — Designing Blended Learning Experiences", url: "https://er.educause.edu/articles/2020/3/designing-effective-blended-learning" }
+      { title: "Emerging Practice of Blended Learning", url: "https://www.researchgate.net/publication/258477665_Emerging_practice_and_research_in_blended_learning" },
+      { title: "Chapter 11. Designing Blended Learning Space to the Student Experience", url: "https://www.educause.edu/research-and-publications/books/learning-spaces/chapter-11-designing-blended-learning-space-student-experience" }// 
     ]
   },
 
@@ -203,7 +203,8 @@ export const recommendationRules: Recommendation[] = [
     example: <ChildrenInterfaceExample />,
     reference: [
       { title: "NN/g — UX Design for Children", url: "https://www.nngroup.com/reports/children-on-the-web/" },
-      { title: "Read (2015) — Designing Digital Interfaces for Kids", url: "https://doi.org/10.1007/978-3-319-20916-6_1" }
+      { title: "Children Digital Libraries and User Interfaces: Proposing a Set of Criteria", url: "https://www.researchgate.net/publication/287611098_Children_Digital_Libraries_and_User_Interfaces_Proposing_a_Set_of_Criteria" }//
+
     ]
   },
   {
@@ -218,7 +219,7 @@ export const recommendationRules: Recommendation[] = [
     example: <TechSavvyShortcutsExample />,
     reference: [
       { title: "NN/g — Progressive Disclosure", url: "https://www.nngroup.com/articles/progressive-disclosure/" },
-      { title: "NN/g — UX Patterns for Power Users", url: "https://www.nngroup.com/articles/power-users-ux/" }
+      { title: "Supporting Power User Isn’t Enough: 3 Complex-App User Types", url: "https://www.nngroup.com/articles/complex-apps-users//" } // esto no funciona
     ]
   }
 ];
