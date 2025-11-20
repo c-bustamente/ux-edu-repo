@@ -1,4 +1,4 @@
-import { RecommendationGenerator } from "@/components/RecommendationGenerator";
+import RecommendationGenerator from "@/components/RecommendationGenerator";
 
 export const metadata = {
   title: "Recommendation Generator | UX Educational Platform",

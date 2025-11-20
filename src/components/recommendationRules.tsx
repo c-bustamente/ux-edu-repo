@@ -219,7 +219,7 @@ export const recommendationRules: Recommendation[] = [
     example: <TechSavvyShortcutsExample />,
     reference: [
       { title: "NN/g — Progressive Disclosure", url: "https://www.nngroup.com/articles/progressive-disclosure/" },
-      { title: "Supporting Power User Isn’t Enough: 3 Complex-App User Types", url: "https://www.nngroup.com/articles/complex-apps-users//" } // esto no funciona
+      { title: "Supporting Power User Isn’t Enough: 3 Complex-App User Types", url: "https://www.nngroup.com/articles/complex-apps-users//" } //
     ]
   }
 ];

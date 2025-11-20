@@ -1,27 +1,24 @@
-// PatternRepository.tsx — con botón “Ver ejemplo” y modal para renderizar ejemplos
-// - Agrega soporte a `exampleId?: string` en el tipo BasePattern.
-// - Importa un registry de ejemplos (carga dinámica) y muestra un <Dialog> con la demo.
-// - Elimina el render de relationships (chips), como pediste.
-
+// PatternRepository.tsx
 "use client";
 
 import { useMemo, useState } from "react";
-import { patterns } from "./patternRepo"; // <-- tu data (debe tener exampleId cuando corresponda)
+import { patterns } from "./patternRepo"; // <-- your updated data file
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "./ui/tabs";
 import { Card, CardHeader, CardContent, CardTitle, CardDescription } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { Input } from "./ui/input";
-import { Button } from "./ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "./ui/dialog";
-import { Search, Play } from "lucide-react";
+import { Search } from "lucide-react";
 
-// 🔗 Registry de ejemplos (ver: ./pattern-examples/registry.ts)
-//   export const patternExampleRegistry: Record<string, React.ComponentType<any>>
-import { patternExampleRegistry } from "./patternExamples/registry";
-
-/** --- Tipado local (refleja tu modelo; aquí añadimos exampleId) ------------------------ */
+/** --- Minimal local typing mirrors the proposed model (no need to import extra files) --- */
 type UsageLevel = "High" | "Medium" | "Low" | "Unknown";
 type ComplexityLevel = "High" | "Medium" | "Low" | "Unknown";
+
+type Relationships = {
+  ui?: string[];
+  instructional?: string[];
+  pedagogical?: string[];
+  uxPrinciples?: string[];
+};
 
 type BasePattern = {
   id: string;
@@ -31,9 +28,8 @@ type BasePattern = {
   tags: string[];
   usage?: UsageLevel;
   complexity?: ComplexityLevel;
+  relationships?: Relationships;
   sources?: { title: string; url: string }[];
-  /** NUEVO: ID del ejemplo para abrir en el modal */
-  exampleId?: string;
 };
 
 type UISubcategory =
@@ -61,18 +57,21 @@ type PatternRepositoryData = {
 
 type AnyPattern = UIPattern | InstructionalPattern | PedagogicalPattern;
 
-/** Búsqueda simple por título/desc/tags */
+/** Basic search matcher across title/description/tags/relationships */
 function matchesQuery(q: string, p: AnyPattern) {
   if (!q) return true;
   const needle = q.toLowerCase();
-  return (
+  const inText =
     p.title.toLowerCase().includes(needle) ||
     p.description.toLowerCase().includes(needle) ||
-    (p.tags ?? []).some((t) => t.toLowerCase().includes(needle))
-  );
+    (p.tags ?? []).some((t) => t.toLowerCase().includes(needle));
+  if (inText) return true;
+  const rels = p.relationships ?? {};
+  return Object.values(rels)
+    .flat()
+    .some((v) => (v || "").toLowerCase().includes(needle));
 }
 
-/** Pill reusables para uso/complexity */
 function Pill({ label, value }: { label: "usage" | "complexity"; value?: string }) {
   return (
     <Badge variant="outline">
@@ -81,16 +80,32 @@ function Pill({ label, value }: { label: "usage" | "complexity"; value?: string 
   );
 }
 
-export default function PatternRepository() {
-  const data = patterns as PatternRepositoryData; // asume que tu data sigue el modelo
+/** Small helper to render relationship chips consistently */
+function RelationshipsChips({ rel }: { rel?: Relationships }) {
+  if (!rel) return null;
+  const chips: { key: string; text: string }[] = [];
+  rel.ui?.forEach((r) => chips.push({ key: `ui:${r}`, text: `ui:${r}` }));
+  rel.instructional?.forEach((r) => chips.push({ key: `inst:${r}`, text: `inst:${r}` }));
+  rel.pedagogical?.forEach((r) => chips.push({ key: `ped:${r}`, text: `ped:${r}` }));
+  rel.uxPrinciples?.forEach((r) => chips.push({ key: `ux:${r}`, text: `ux:${r}` }));
+  if (!chips.length) return null;
+  return (
+    <div className="flex flex-wrap gap-2 text-xs">
+      {chips.map((c) => (
+        <Badge key={c.key} variant="secondary">
+          {c.text}
+        </Badge>
+      ))}
+    </div>
+  );
+}
+
+export function PatternRepository() {
+  const data = patterns as PatternRepositoryData; // assumes your data file follows the model
   const uiSubcats = Object.keys(data.ui) as UISubcategory[];
 
   const [tab, setTab] = useState<"ui" | "instructional" | "pedagogical">("ui");
   const [query, setQuery] = useState("");
-
-  // Estado del modal de ejemplo
-  const [openExampleId, setOpenExampleId] = useState<string | null>(null);
-  const [openExampleTitle, setOpenExampleTitle] = useState<string>("");
 
   const filtered: PatternRepositoryData = useMemo(() => {
     if (!query) return data;
@@ -103,22 +118,12 @@ export default function PatternRepository() {
     return { ui: uiFiltered, instructional, pedagogical };
   }, [data, query]);
 
-  // Abre el modal con el ejemplo indicado
-  function openExample(p: AnyPattern) {
-    if (!p.exampleId) return;
-    setOpenExampleId(p.exampleId);
-    setOpenExampleTitle(p.title);
-  }
-
-  // Componente del ejemplo (si existe en el registry)
-  const ExampleCmp = openExampleId ? patternExampleRegistry[openExampleId] : null;
-
   return (
     <div className="container mx-auto px-4 py-8 space-y-6">
       <header>
         <h1 className="text-3xl font-bold mb-2">Pattern Repository</h1>
         <p className="text-muted-foreground mb-4">
-          UI, instructional, and pedagogical patterns. Click “Ver ejemplo” to preview a pattern demo.
+          UI, instructional, and pedagogical patterns with cross-links via tags and relationships.
         </p>
         <div className="relative max-w-md">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -126,7 +131,7 @@ export default function PatternRepository() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             className="pl-10"
-            placeholder="Search by title or tag…"
+            placeholder="Search by title, tag, or relationship…"
             aria-label="Search patterns"
           />
         </div>
@@ -168,22 +173,9 @@ export default function PatternRepository() {
                           </div>
                         )}
                       </CardHeader>
-                      <CardContent className="space-y-4">
+                      <CardContent className="space-y-3">
                         <CardDescription>{p.description}</CardDescription>
-
-                        {/* Botón para abrir el ejemplo (si hay exampleId) */}
-                        {p.exampleId ? (
-                          <div>
-                            <Button size="sm" onClick={() => openExample(p)}>
-                              <Play className="w-4 h-4 mr-1" />
-                              Ver ejemplo
-                            </Button>
-                          </div>
-                        ) : (
-                          <div className="text-xs text-muted-foreground">Sin ejemplo aún.</div>
-                        )}
-
-                        {/* (El render de relationships fue retirado a tu pedido) */}
+                        <RelationshipsChips rel={p.relationships} />
                       </CardContent>
                     </Card>
                   ))}
@@ -216,19 +208,9 @@ export default function PatternRepository() {
                     </div>
                   )}
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent className="space-y-3">
                   <CardDescription>{p.description}</CardDescription>
-
-                  {p.exampleId ? (
-                    <div>
-                      <Button size="sm" onClick={() => openExample(p)}>
-                        <Play className="w-4 h-4 mr-1" />
-                        Ver ejemplo
-                      </Button>
-                    </div>
-                  ) : (
-                    <div className="text-xs text-muted-foreground">Sin ejemplo aún.</div>
-                  )}
+                  <RelationshipsChips rel={p.relationships} />
                 </CardContent>
               </Card>
             ))}
@@ -258,42 +240,17 @@ export default function PatternRepository() {
                     </div>
                   )}
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent className="space-y-3">
                   <CardDescription>{p.description}</CardDescription>
-
-                  {p.exampleId ? (
-                    <div>
-                      <Button size="sm" onClick={() => openExample(p)}>
-                        <Play className="w-4 h-4 mr-1" />
-                        Ver ejemplo
-                      </Button>
-                    </div>
-                  ) : (
-                    <div className="text-xs text-muted-foreground">Sin ejemplo aún.</div>
-                  )}
+                  <RelationshipsChips rel={p.relationships} />
                 </CardContent>
               </Card>
             ))}
           </div>
         </TabsContent>
       </Tabs>
-
-      {/* Modal para renderizar el ejemplo seleccionado */}
-      <Dialog open={!!openExampleId} onOpenChange={(open) => !open && setOpenExampleId(null)}>
-        <DialogContent className="max-w-2xl">
-          <DialogHeader>
-            <DialogTitle>Ejemplo — {openExampleTitle || "Patrón"}</DialogTitle>
-            <DialogDescription>Vista previa del patrón en uso.</DialogDescription>
-          </DialogHeader>
-          <div className="mt-2">
-            {ExampleCmp ? (
-              <ExampleCmp />
-            ) : (
-              <p className="text-sm text-muted-foreground">Ejemplo no disponible.</p>
-            )}
-          </div>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 }
+
+export default PatternRepository;

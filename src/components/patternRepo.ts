@@ -21,6 +21,7 @@ export type BasePattern = {
   complexity?: ComplexityLevel;
   relationships?: Relationships;
   sources?: { title: string; url: string }[];
+  exampleId?: string;
 };
 
 export type UISubcategory =
@@ -72,6 +73,7 @@ export const patterns: PatternRepositoryData = {
           ui: ["ui-autocomplete", "ui-good-defaults"],
         },
         sources: [{ title: "UI-Patterns: Input Feedback", url: "https://ui-patterns.com/patterns/InputFeedback" }],
+        exampleId: "ExampleInputFeedback",
       },
       {
         id: "ui-wizard",
@@ -90,6 +92,7 @@ export const patterns: PatternRepositoryData = {
           ui: ["ui-completeness-meter", "ui-progressive-disclosure"],
         },
         sources: [{ title: "UI-Patterns: Wizard", url: "https://ui-patterns.com/patterns/Wizard" }],
+        exampleId: "ExampleWizard",
       },
       {
         id: "ui-inline-help-box",
@@ -108,6 +111,7 @@ export const patterns: PatternRepositoryData = {
           ui: ["ui-coachmarks", "ui-guided-tour"],
         },
         sources: [{ title: "UI-Patterns: Inline Help Box", url: "https://ui-patterns.com/patterns/InlineHelpBox" }],
+        exampleId: "ExampleInlineHelpBox",
       },
       {
         id: "ui-completeness-meter",
@@ -126,6 +130,7 @@ export const patterns: PatternRepositoryData = {
           ui: ["ui-wizard", "ui-dashboard"],
         },
         sources: [{ title: "UI-Patterns: Completeness Meter", url: "https://ui-patterns.com/patterns/CompletenessMeter" }],
+        exampleId: "ExampleCompletenessMeter",
       },
       {
         id: "ui-good-defaults",
@@ -144,6 +149,7 @@ export const patterns: PatternRepositoryData = {
           ui: ["ui-autocomplete"],
         },
         sources: [{ title: "UI-Patterns: Good Defaults", url: "https://ui-patterns.com/patterns/GoodDefaults" }],
+        exampleId: "ExampleGoodDefaults",
       },
     ],
 
@@ -166,6 +172,7 @@ export const patterns: PatternRepositoryData = {
           ui: ["ui-navigation-tabs"],
         },
         sources: [{ title: "UI-Patterns: Breadcrumbs", url: "https://ui-patterns.com/patterns/Breadcrumbs" }],
+        exampleId: "ExampleBreadcrumbs",
       },
       {
         id: "ui-notifications",
@@ -184,6 +191,7 @@ export const patterns: PatternRepositoryData = {
           ui: ["ui-activity-stream", "ui-collectible-achievements"],
         },
         sources: [{ title: "UI-Patterns: Notifications", url: "https://ui-patterns.com/patterns/notifications" }],
+        exampleId: "ExampleNotifications",
       },
       {
         id: "ui-navigation-tabs",
@@ -202,6 +210,7 @@ export const patterns: PatternRepositoryData = {
           ui: ["ui-breadcrumbs"],
         },
         sources: [{ title: "UI-Patterns: Navigation Tabs", url: "https://ui-patterns.com/patterns/NavigationTabs" }],
+        exampleId: "ExampleNavigationTabs",
       },
       {
         id: "ui-progressive-disclosure",
@@ -220,6 +229,7 @@ export const patterns: PatternRepositoryData = {
           ui: ["ui-wizard"],
         },
         sources: [{ title: "UI-Patterns: Progressive Disclosure", url: "https://ui-patterns.com/patterns/ProgressiveDisclosure" }],
+        exampleId: "ExampleProgressiveDisclosure",
       },
       {
         id: "ui-adaptable-view",
@@ -238,6 +248,7 @@ export const patterns: PatternRepositoryData = {
           ui: ["ui-dashboard"],
         },
         sources: [{ title: "UI-Patterns: Adaptable View", url: "https://ui-patterns.com/patterns/AdaptableView" }],
+        exampleId: "ExampleAdaptableView",
       },
     ],
 
@@ -260,6 +271,7 @@ export const patterns: PatternRepositoryData = {
           ui: ["ui-search-filters", "ui-good-defaults"],
         },
         sources: [{ title: "UI-Patterns: Autocomplete", url: "https://ui-patterns.com/patterns/Autocomplete" }],
+        exampleId: "ExampleAutocomplete",
       },
       {
         id: "ui-search-filters",
@@ -278,6 +290,7 @@ export const patterns: PatternRepositoryData = {
           ui: ["ui-autocomplete", "ui-dashboard"],
         },
         sources: [{ title: "UI-Patterns: Live Filter", url: "https://ui-patterns.com/patterns/LiveFilter" }],
+        exampleId: "ExampleSearchFilters",
       },
       {
         id: "ui-dashboard",
@@ -296,6 +309,7 @@ export const patterns: PatternRepositoryData = {
           ui: ["ui-completeness-meter", "ui-search-filters"],
         },
         sources: [{ title: "UI-Patterns: Dashboard", url: "https://ui-patterns.com/patterns/dashboard" }],
+        exampleId: "ExampleDashboard",
       },
     ],
 
@@ -318,6 +332,7 @@ export const patterns: PatternRepositoryData = {
           ui: ["ui-collectible-achievements"],
         },
         sources: [{ title: "UI-Patterns: Leaderboard", url: "https://ui-patterns.com/patterns/leaderboard" }],
+        exampleId: "ExampleLeaderboard",
       },
       {
         id: "ui-collectible-achievements",
@@ -336,6 +351,7 @@ export const patterns: PatternRepositoryData = {
           ui: ["ui-leaderboard", "ui-notifications"],
         },
         sources: [{ title: "UI-Patterns: Collectible Achievements", url: "https://ui-patterns.com/patterns/CollectibleAchievements" }],
+        exampleId: "ExampleCollectibleAchievements",
       },
       {
         id: "ui-activity-stream",
@@ -354,6 +370,7 @@ export const patterns: PatternRepositoryData = {
           ui: ["ui-notifications"],
         },
         sources: [{ title: "UI-Patterns: Activity Stream", url: "https://ui-patterns.com/patterns/ActivityStream" }],
+        exampleId: "ExampleActivityStream",
       },
       {
         id: "ui-chat",
@@ -372,6 +389,7 @@ export const patterns: PatternRepositoryData = {
           ui: ["ui-reaction"],
         },
         sources: [{ title: "UI-Patterns: Direct Messaging", url: "https://ui-patterns.com/patterns/direct-messaging" }],
+        exampleId: "ExampleChat",
       },
       {
         id: "ui-reaction",
@@ -390,6 +408,7 @@ export const patterns: PatternRepositoryData = {
           ui: ["ui-activity-stream"],
         },
         sources: [{ title: "UI-Patterns: Reaction", url: "https://ui-patterns.com/patterns/reaction" }],
+        exampleId: "ExampleReaction",
       },
     ],
 
@@ -412,6 +431,7 @@ export const patterns: PatternRepositoryData = {
           ui: ["ui-guided-tour", "ui-inline-help-box"],
         },
         sources: [{ title: "UI-Patterns: Coachmarks", url: "https://ui-patterns.com/patterns/coachmarks" }],
+        exampleId: "ExampleCoachmarks",
       },
       {
         id: "ui-guided-tour",
@@ -430,6 +450,7 @@ export const patterns: PatternRepositoryData = {
           ui: ["ui-coachmarks", "ui-inline-help-box"],
         },
         sources: [{ title: "UI-Patterns: Guided Tour", url: "https://ui-patterns.com/patterns/Guided-tour" }],
+        exampleId: "ExampleGuidedTour",
       },
       {
         id: "ui-blank-slate",
@@ -448,6 +469,7 @@ export const patterns: PatternRepositoryData = {
           ui: ["ui-guided-tour"],
         },
         sources: [{ title: "UI-Patterns: Blank Slate", url: "https://ui-patterns.com/patterns/BlankSlate" }],
+        exampleId: "ExampleBlankSlate",
       },
     ],
   },
@@ -474,7 +496,8 @@ export const patterns: PatternRepositoryData = {
         title: "Patrones de diseño para la construcción de cursos on-line en un entorno virtual de aprendizaje",
         url: "https://www.scielo.cl/pdf/ingeniare/v26n1/0718-3305-ingeniare-26-01-00157.pdf"
       }
-    ]
+    ],
+    exampleId: "ExampleZeroBlock",
   },
   {
     id: "inst-resources", // PD02
@@ -496,7 +519,8 @@ export const patterns: PatternRepositoryData = {
         title: "Patrones de diseño para la construcción de cursos on-line en un entorno virtual de aprendizaje",
         url: "https://www.scielo.cl/pdf/ingeniare/v26n1/0718-3305-ingeniare-26-01-00157.pdf"
       }
-    ]
+    ],
+    exampleId: "ExampleResourceDesign",
   },
   {
     id: "inst-glossary", // PD03
@@ -518,7 +542,8 @@ export const patterns: PatternRepositoryData = {
         title: "Patrones de diseño para la construcción de cursos on-line en un entorno virtual de aprendizaje",
         url: "https://www.scielo.cl/pdf/ingeniare/v26n1/0718-3305-ingeniare-26-01-00157.pdf"
       }
-    ]
+    ],
+    exampleId: "ExampleGlossary",
   },
   {
     id: "inst-assignments", // PD04
@@ -540,7 +565,8 @@ export const patterns: PatternRepositoryData = {
         title: "Patrones de diseño para la construcción de cursos on-line en un entorno virtual de aprendizaje",
         url: "https://www.scielo.cl/pdf/ingeniare/v26n1/0718-3305-ingeniare-26-01-00157.pdf"
       }
-    ]
+    ],
+    exampleId: "ExampleAssignments",
   },
   {
     id: "inst-forum", // PD05
@@ -562,7 +588,8 @@ export const patterns: PatternRepositoryData = {
         title: "Patrones de diseño para la construcción de cursos on-line en un entorno virtual de aprendizaje",
         url: "https://www.scielo.cl/pdf/ingeniare/v26n1/0718-3305-ingeniare-26-01-00157.pdf"
       }
-    ]
+    ],
+    exampleId: "ExampleForum",
   },
   {
     id: "inst-evaluations", // PD06
@@ -584,7 +611,8 @@ export const patterns: PatternRepositoryData = {
         title: "Patrones de diseño para la construcción de cursos on-line en un entorno virtual de aprendizaje",
         url: "https://www.scielo.cl/pdf/ingeniare/v26n1/0718-3305-ingeniare-26-01-00157.pdf"
       }
-    ]
+    ],
+    exampleId: "ExampleAssessments",
   },
   {
     id: "inst-scorm-objects", // PD07
@@ -606,7 +634,8 @@ export const patterns: PatternRepositoryData = {
         title: "Patrones de diseño para la construcción de cursos on-line en un entorno virtual de aprendizaje",
         url: "https://www.scielo.cl/pdf/ingeniare/v26n1/0718-3305-ingeniare-26-01-00157.pdf"
       }
-    ]
+    ],
+    exampleId: "ExampleScormObjects",
   },
   {
     id: "inst-wiki", // PD08
@@ -628,7 +657,8 @@ export const patterns: PatternRepositoryData = {
         title: "Patrones de diseño para la construcción de cursos on-line en un entorno virtual de aprendizaje",
         url: "https://www.scielo.cl/pdf/ingeniare/v26n1/0718-3305-ingeniare-26-01-00157.pdf"
       }
-    ]
+    ],
+    exampleId: "ExampleWiki",
   },
   {
     id: "inst-chat", // PD09
@@ -650,7 +680,8 @@ export const patterns: PatternRepositoryData = {
         title: "Patrones de diseño para la construcción de cursos on-line en un entorno virtual de aprendizaje",
         url: "https://www.scielo.cl/pdf/ingeniare/v26n1/0718-3305-ingeniare-26-01-00157.pdf"
       }
-    ]
+    ],
+    exampleId: "ExampleChatInstructional",
   },
   {
     id: "inst-games", // PD10
@@ -672,7 +703,8 @@ export const patterns: PatternRepositoryData = {
         title: "Patrones de diseño para la construcción de cursos on-line en un entorno virtual de aprendizaje",
         url: "https://www.scielo.cl/pdf/ingeniare/v26n1/0718-3305-ingeniare-26-01-00157.pdf"
       }
-    ]
+    ],
+    exampleId: "ExampleGames",
   }
   ],
 
@@ -694,6 +726,7 @@ export const patterns: PatternRepositoryData = {
         ui: ["ui-blank-slate"],
       },
       sources: [{ title: "Pedagogical Patterns (Bergin)", url: "http://csis.pace.edu/~bergin/PedPat1.3.html" }],
+      exampleId: "ExampleEarlyBird",
     },
     {
       id: "ped-spiral",
@@ -711,6 +744,7 @@ export const patterns: PatternRepositoryData = {
         ui: ["ui-progressive-disclosure"],
       },
       sources: [{ title: "Pedagogical Patterns (Bergin)", url: "http://csis.pace.edu/~bergin/PedPat1.3.html" }],
+      exampleId: "ExampleSpiral",
     },
     {
       id: "ped-consistent-metaphor",
@@ -728,6 +762,7 @@ export const patterns: PatternRepositoryData = {
         ui: [],
       },
       sources: [{ title: "Pedagogical Patterns (Bergin)", url: "http://csis.pace.edu/~bergin/PedPat1.3.html" }],
+      exampleId: "ExampleConsistentMetaphor",
     },
     {
       id: "ped-toy-box",
@@ -745,6 +780,7 @@ export const patterns: PatternRepositoryData = {
         ui: ["ui-blank-slate"],
       },
       sources: [{ title: "Pedagogical Patterns (Bergin)", url: "http://csis.pace.edu/~bergin/PedPat1.3.html" }],
+      exampleId: "ExampleToyBox",
     },
     {
       id: "ped-tool-box",
@@ -762,6 +798,7 @@ export const patterns: PatternRepositoryData = {
         ui: ["ui-dashboard"],
       },
       sources: [{ title: "Pedagogical Patterns (Bergin)", url: "http://csis.pace.edu/~bergin/PedPat1.3.html" }],
+      exampleId: "ExampleToolBox",
     },
     {
       id: "ped-lay-of-the-land",
@@ -779,6 +816,7 @@ export const patterns: PatternRepositoryData = {
         ui: ["ui-breadcrumbs"],
       },
       sources: [{ title: "Pedagogical Patterns (Bergin)", url: "http://csis.pace.edu/~bergin/PedPat1.3.html" }],
+      exampleId: "ExampleLayOfTheLand",
     },
     {
       id: "ped-fixer-upper",
@@ -796,6 +834,7 @@ export const patterns: PatternRepositoryData = {
         ui: ["ui-input-feedback"],
       },
       sources: [{ title: "Pedagogical Patterns (Bergin)", url: "http://csis.pace.edu/~bergin/PedPat1.3.html" }],
+      exampleId: "ExampleFixerUpper",
     },
     {
       id: "ped-larger-than-life",
@@ -813,6 +852,7 @@ export const patterns: PatternRepositoryData = {
         ui: [],
       },
       sources: [{ title: "Pedagogical Patterns (Bergin)", url: "http://csis.pace.edu/~bergin/PedPat1.3.html" }],
+      exampleId: "ExampleLargerThanLife",
     },
     {
       id: "ped-student-design-sprint",
@@ -830,6 +870,7 @@ export const patterns: PatternRepositoryData = {
         ui: ["ui-wizard"],
       },
       sources: [{ title: "Pedagogical Patterns (Bergin)", url: "http://csis.pace.edu/~bergin/PedPat1.3.html" }],
+      exampleId: "ExampleStudentDesignSprint",
     },
     {
       id: "ped-mistake",
@@ -847,6 +888,7 @@ export const patterns: PatternRepositoryData = {
         ui: ["ui-input-feedback"],
       },
       sources: [{ title: "Pedagogical Patterns (Bergin)", url: "http://csis.pace.edu/~bergin/PedPat1.3.html" }],
+      exampleId: "ExampleMistake",
     },
     {
       id: "ped-test-tube",
@@ -864,6 +906,7 @@ export const patterns: PatternRepositoryData = {
         ui: ["ui-blank-slate"],
       },
       sources: [{ title: "Pedagogical Patterns (Bergin)", url: "http://csis.pace.edu/~bergin/PedPat1.3.html" }],
+      exampleId: "ExampleTestTube",
     },
     {
       id: "ped-fill-in-the-blanks",
@@ -881,6 +924,7 @@ export const patterns: PatternRepositoryData = {
         ui: [],
       },
       sources: [{ title: "Pedagogical Patterns (Bergin)", url: "http://csis.pace.edu/~bergin/PedPat1.3.html" }],
+      exampleId: "ExampleFillInTheBlanks",
     },
     {
       id: "ped-gold-star",
@@ -898,6 +942,7 @@ export const patterns: PatternRepositoryData = {
         ui: ["ui-leaderboard", "ui-collectible-achievements", "ui-notifications"],
       },
       sources: [{ title: "Pedagogical Patterns (Bergin)", url: "http://csis.pace.edu/~bergin/PedPat1.3.html" }],
+      exampleId: "ExampleGoldStar",
     },
     {
       id: "ped-grade-it-again-sam",
@@ -915,6 +960,7 @@ export const patterns: PatternRepositoryData = {
         ui: ["ui-completeness-meter"],
       },
       sources: [{ title: "Pedagogical Patterns (Bergin)", url: "http://csis.pace.edu/~bergin/PedPat1.3.html" }],
+      exampleId: "ExampleGradeItAgainSam",
     },
   ],
 };

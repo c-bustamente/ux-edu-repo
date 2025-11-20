@@ -6,9 +6,13 @@
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "db:generate": "dotenv -e .env -- prisma generate --schema=prisma/schema.prisma",
+    "db:migrate": "dotenv -e .env -- prisma migrate dev --schema=prisma/schema.prisma",
+    "db:import": "dotenv -e .env -- tsx scripts/import-recommendations.ts"
   },
   "dependencies": {
+    "@prisma/client": "^6.19.0",
     "@radix-ui/react-accordion": "^1.2.12",
     "@radix-ui/react-alert-dialog": "^1.1.15",
     "@radix-ui/react-aspect-ratio": "^1.1.7",
@@ -38,7 +42,10 @@
     "cmdk": "^1.1.1",
     "embla-carousel-react": "^8.6.0",
     "framer-motion": "^12.23.24",
+    "html2canvas": "^1.4.1",
     "input-otp": "^1.4.2",
+    "json5": "^2.2.3",
+    "jspdf": "^3.0.3",
     "lucide-react": "^0.546.0",
     "next": "15.5.6",
     "next-themes": "^0.4.6",
@@ -60,9 +67,13 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "dotenv-cli": "^11.0.0",
     "eslint": "^9",
     "eslint-config-next": "15.5.6",
+    "prisma": "^6.19.0",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "ts-node": "^10.9.2",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
   }
 }

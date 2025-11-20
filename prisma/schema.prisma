@@ -1,0 +1,46 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+
+/*
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+*/
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model RecommendationFlat {
+  inputId       String   @id @map("input_id")
+  collection    String
+  status        String?
+  patternRef    String?  @map("pattern_ref")
+  evaType       String?  @map("eva_type")
+  platform      String?
+  audience      String?
+  title         String?
+  how           String?
+  why           String?
+  recomendation Json?
+  sources       Json?
+  rawItem       Json?    @map("raw_item")
+  insertedAt    DateTime @default(now()) @map("inserted_at")
+
+  @@map("recommendation_flat")
+}
