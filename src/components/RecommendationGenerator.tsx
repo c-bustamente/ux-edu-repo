@@ -83,6 +83,46 @@ type Rec = {
   sources: SourceRef[];
 };
 
+type PatternCategory = "ui" | "instructional" | "pedagogical";
+
+type PatternBase = {
+  id: string;
+  title?: string;
+  subcategory?: string;
+  description?: string;
+  tags?: string[];
+  sources?: SourceRef[];
+  example?: string;
+  exampleText?: string;
+  exampleImg?: string;
+  exampleImage?: string;
+};
+
+type PatternWithType = PatternBase & {
+  type: PatternCategory;
+};
+
+type PatternRepoData = {
+  ui?: Record<string, PatternBase[]>;
+  instructional?: PatternBase[];
+  pedagogical?: PatternBase[];
+};
+
+type AssocMaps = {
+  ui: Map<string, PatternWithType>;
+  instructional: Map<string, PatternWithType>;
+  pedagogical: Map<string, PatternWithType>;
+};
+
+type Html2CanvasOptions = {
+  scale?: number;
+  useCORS?: boolean;
+  backgroundColor?: string;
+  windowWidth?: number;
+};
+
+type Html2CanvasFn = (el: HTMLElement, opts?: Html2CanvasOptions) => Promise<HTMLCanvasElement>;
+
 /* ===================== Helpers ===================== */
 const sourceLabels: Record<string, { label: string; border: string; pill: string }> = {
   PLATFORM_UI_COMBINED: { label: "Platform UI", border: "border-emerald-300", pill: "bg-emerald-100 text-emerald-800" },
@@ -191,19 +231,41 @@ export default function RecommendationGenerator() {
   useEffect(() => { try { const ids = Object.keys(selected); localStorage.setItem("recgen:selected", JSON.stringify(ids)); } catch {} }, [selected]);
 
   // Pattern index with category 'type'
-  const patternIndex = useMemo(() => {
-    const m = new Map<string, any>();
-    const data: any = patterns as any;
-    if (data?.ui) { Object.keys(data.ui).forEach((sub) => { (data.ui[sub] || []).forEach((p: any) => m.set(p.id, { ...p, type: "ui" })); }); }
-    (data?.instructional || []).forEach((p: any) => m.set(p.id, { ...p, type: "instructional" }));
-    (data?.pedagogical || []).forEach((p: any) => m.set(p.id, { ...p, type: "pedagogical" }));
-    return m;
-  }, []);
+ 
+const patternIndex = useMemo<Map<string, PatternWithType>>(() => {
+  const m = new Map<string, PatternWithType>();
+  const data = patterns as PatternRepoData;
+
+  if (data.ui) {
+    Object.keys(data.ui).forEach((subcat) => {
+      const arr = data.ui?.[subcat] ?? [];
+      arr.forEach((p) => {
+        if (!p.id) return;
+        m.set(p.id, { ...p, type: "ui" });
+      });
+    });
+  }
+
+  (data.instructional ?? []).forEach((p) => {
+    if (!p.id) return;
+    m.set(p.id, { ...p, type: "instructional" });
+  });
+
+  (data.pedagogical ?? []).forEach((p) => {
+    if (!p.id) return;
+    m.set(p.id, { ...p, type: "pedagogical" });
+  });
+
+  return m;
+}, []);
 
   // Pattern preview dialog (modal to avoid scope issues) + fullscreen toggle
   const [previewPatternId, setPreviewPatternId] = useState<string | null>(null);
   const [patternFull, setPatternFull] = useState(false);
-  const previewPattern = useMemo(() => (previewPatternId ? patternIndex.get(previewPatternId) : null), [previewPatternId, patternIndex]);
+  const previewPattern = useMemo(
+  () => (previewPatternId ? patternIndex.get(previewPatternId) ?? null : null),
+  [previewPatternId, patternIndex]
+);
   const openPattern = useCallback((id: string) => { setPreviewPatternId(id); setPatternFull(false); }, []);
 
   // Load data
@@ -429,8 +491,9 @@ export default function RecommendationGenerator() {
             {previewPattern?.description && <p className="text-sm break-words">{previewPattern.description}</p>}
             {/* Example block */}
             {(() => {
-              const ex = (previewPattern && (previewPattern.example || previewPattern.exampleText)) as any;
-              const img = (previewPattern && (previewPattern.exampleImg || previewPattern.exampleImage)) as any;
+              const ex = previewPattern && (previewPattern.example || previewPattern.exampleText);
+              const img = previewPattern && (previewPattern.exampleImg || previewPattern.exampleImage);
+
               if (!ex && !img) return null;
               return (
                 <div>
@@ -456,7 +519,7 @@ export default function RecommendationGenerator() {
               <div>
                 <div className="text-xs font-semibold mb-1">Sources</div>
                 <ul className="list-disc pl-5 space-y-1">
-                  {previewPattern.sources.slice(0, 5).map((s: any, i: number) => (
+                  {previewPattern.sources.slice(0, 5).map((s: SourceRef, i: number) => (
                     <li key={i} className="text-xs break-words">
                       {s.title}
                       {s.url ? (<><span> · </span><a href={s.url} target="_blank" rel="noreferrer" className="underline inline-flex items-center gap-1 break-all">link <ExternalLink className="w-3 h-3" /></a></>) : null}
@@ -572,7 +635,12 @@ function RecommendationCard({ rec, isOpen, isSelected, onToggleOpen, onToggleSel
 }
 
 /* -------- Selected Panel (desktop + mobile flyout reuse) -------- */
-type SelectedPanelProps = { items: Rec[]; onRemove: (id: string) => void; onClear: () => void; patternIndex: Map<string, any>; };
+type SelectedPanelProps = {
+  items: Rec[];
+  onRemove: (id: string) => void;
+  onClear: () => void;
+  patternIndex: Map<string, PatternWithType>;
+};
 function SelectedPanel({ items, onRemove, onClear, patternIndex }: SelectedPanelProps) {
   const [copied, setCopied] = useState<"json" | "md" | null>(null);
   const [exporting, setExporting] = useState(false);
@@ -584,17 +652,32 @@ function SelectedPanel({ items, onRemove, onClear, patternIndex }: SelectedPanel
   function copy(text: string, kind: "json" | "md") { navigator.clipboard.writeText(text).then(() => setCopied(kind)); setTimeout(() => setCopied(null), 1500); }
 
   // Associated patterns by category (for PDF)
-  const assoc = useMemo(() => {
-    const out = { ui: new Map<string, any>(), instructional: new Map<string, any>(), pedagogical: new Map<string, any>() };
-    for (const r of items) { const id = r.patternRef; if (!id) continue; const p = patternIndex.get(id); if (p?.type && (out as any)[p.type]) (out as any)[p.type].set(id, p); }
-    return out;
-  }, [items, patternIndex]);
+const assoc: AssocMaps = useMemo(() => {
+  const out: AssocMaps = {
+    ui: new Map<string, PatternWithType>(),
+    instructional: new Map<string, PatternWithType>(),
+    pedagogical: new Map<string, PatternWithType>(),
+  };
+
+  for (const r of items) {
+    const id = r.patternRef;
+    if (!id) continue;
+
+    const p = patternIndex.get(id);
+    if (!p) continue;
+
+    out[p.type].set(id, p);
+  }
+
+  return out;
+}, [items, patternIndex]);
+
 
   const handleExportPDF = async () => {
     if (!pdfRef.current) return; setExporting(true); const node = pdfRef.current as HTMLElement; node.classList.add("print-safe"); await new Promise<void>((r) => requestAnimationFrame(() => r()));
     try {
       const { jsPDF } = await import("jspdf");
-      const html2canvas = (await import("html2canvas")).default as (el: HTMLElement, opts?: any) => Promise<HTMLCanvasElement>;
+      const html2canvas: Html2CanvasFn = (await import("html2canvas")).default as Html2CanvasFn;
       const pdf = new jsPDF({ orientation: "p", unit: "pt", format: "a4" });
       const pageWidth = pdf.internal.pageSize.getWidth();
       const pageHeight = pdf.internal.pageSize.getHeight();
@@ -655,21 +738,34 @@ function SelectedPanel({ items, onRemove, onClear, patternIndex }: SelectedPanel
               <section className="space-y-3">
                 <h3 className="text-base font-semibold">Associated patterns (by category)</h3>
                 <div className="space-y-3">
-                  {(["ui", "instructional", "pedagogical"] as const).map((cat) => {
-                    const arr = Array.from((assoc as any)[cat].values()) as any[];
+                 {(["ui", "instructional", "pedagogical"] as const).map((cat) => {
+                    const arr: PatternWithType[] = Array.from(assoc[cat].values());
                     const label = cat === "ui" ? "UI" : cat[0].toUpperCase() + cat.slice(1);
+
                     return (
                       <div key={cat} className="border rounded p-3">
                         <div className="font-semibold mb-2">{label}</div>
-                        {arr.length === 0 ? (<div className="text-xs text-muted-foreground">—</div>) : (
+                        {arr.length === 0 ? (
+                          <div className="text-xs text-muted-foreground">—</div>
+                        ) : (
                           <div className="space-y-2">
                             {arr.map((p) => (
                               <div key={p.id}>
                                 <div className="text-sm font-medium break-words">{p.title || p.id}</div>
-                                {p.description ? (<div className="text-xs text-muted-foreground break-words">{p.description}</div>) : null}
+                                {p.description ? (
+                                  <div className="text-xs text-muted-foreground break-words">
+                                    {p.description}
+                                  </div>
+                                ) : null}
+
                                 {Array.isArray(p.sources) && p.sources.length > 0 ? (
                                   <ul className="list-disc pl-5 mt-1">
-                                    {p.sources.slice(0, 6).map((s: any, i: number) => (<li key={i} className="text-xs break-words">{s.title}{s.url ? ` · ${s.url}` : ""}</li>))}
+                                    {p.sources.slice(0, 6).map((s: SourceRef, i: number) => (
+                                      <li key={i} className="text-xs break-words">
+                                        {s.title}
+                                        {s.url ? ` · ${s.url}` : ""}
+                                      </li>
+                                    ))}
                                   </ul>
                                 ) : null}
                               </div>
@@ -679,6 +775,7 @@ function SelectedPanel({ items, onRemove, onClear, patternIndex }: SelectedPanel
                       </div>
                     );
                   })}
+
                 </div>
               </section>
             </div>

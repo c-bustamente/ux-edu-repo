@@ -85,7 +85,7 @@ export default function PatternRepository() {
   const data = patterns as PatternRepositoryData; // asume que tu data sigue el modelo
   const uiSubcats = Object.keys(data.ui) as UISubcategory[];
 
-  const [tab, setTab] = useState<"ui" | "instructional" | "pedagogical">("ui");
+  const [tab, setTab] = useState("ui");
   const [query, setQuery] = useState("");
 
   // Estado del modal de ejemplo
@@ -101,7 +101,7 @@ export default function PatternRepository() {
     const instructional = data.instructional.filter((p) => matchesQuery(query, p));
     const pedagogical = data.pedagogical.filter((p) => matchesQuery(query, p));
     return { ui: uiFiltered, instructional, pedagogical };
-  }, [data, query]);
+  }, [data, query, uiSubcats]);
 
   // Abre el modal con el ejemplo indicado
   function openExample(p: AnyPattern) {
@@ -132,7 +132,7 @@ export default function PatternRepository() {
         </div>
       </header>
 
-      <Tabs value={tab} onValueChange={(v) => setTab(v as any)} className="space-y-6">
+      <Tabs value={tab} onValueChange={(v) => setTab(v)} className="space-y-6">
         <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="ui">UI</TabsTrigger>
           <TabsTrigger value="instructional">Instructional</TabsTrigger>
