@@ -1,7 +1,11 @@
-// PatternRepository.tsx — con botón “Ver ejemplo” y modal para renderizar ejemplos
-// - Agrega soporte a `exampleId?: string` en el tipo BasePattern.
-// - Importa un registry de ejemplos (carga dinámica) y muestra un <Dialog> con la demo.
-// - Elimina el render de relationships (chips), como pediste.
+// PatternRepository.tsx — con botón “Ver ejemplo” y bordes de color según tipo de patrón
+// - Soporta `exampleId?: string` en BasePattern.
+// - Usa un registry de ejemplos para mostrar un <Dialog> con la demo.
+// - El render de relationships fue eliminado (como pediste).
+// - Ahora las tarjetas tienen borde de color según el tipo de patrón:
+//   - UI           → borde esmeralda (Platform UI)
+//   - Instructional→ borde violeta   (EVA)
+//   - Pedagogical  → borde celeste   (Audience)
 
 "use client";
 
@@ -12,7 +16,13 @@ import { Card, CardHeader, CardContent, CardTitle, CardDescription } from "./ui/
 import { Badge } from "./ui/badge";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "./ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "./ui/dialog";
 import { Search, Play } from "lucide-react";
 
 // 🔗 Registry de ejemplos (ver: ./pattern-examples/registry.ts)
@@ -32,7 +42,7 @@ type BasePattern = {
   usage?: UsageLevel;
   complexity?: ComplexityLevel;
   sources?: { title: string; url: string }[];
-  /** NUEVO: ID del ejemplo para abrir en el modal */
+  /** ID del ejemplo para abrir en el modal */
   exampleId?: string;
 };
 
@@ -49,8 +59,15 @@ type UIPattern = BasePattern & {
   sourceUrl?: string;
 };
 
-type InstructionalPattern = BasePattern & { type: "instructional"; frameworkRef?: string };
-type PedagogicalPattern = BasePattern & { type: "pedagogical"; frameworkRef?: string };
+type InstructionalPattern = BasePattern & {
+  type: "instructional";
+  frameworkRef?: string;
+};
+
+type PedagogicalPattern = BasePattern & {
+  type: "pedagogical";
+  frameworkRef?: string;
+};
 
 type PatternRepositoryData = {
   ui: Record<UISubcategory, UIPattern[]>;
@@ -61,10 +78,17 @@ type PatternRepositoryData = {
 
 type AnyPattern = UIPattern | InstructionalPattern | PedagogicalPattern;
 
+/** Borde por tipo de patrón — alineado con los colores de RecommendationGenerator */
+const PATTERN_BORDER_CLASSES: Record<BasePattern["type"], string> = {
+  ui: "border-emerald-300", // Platform UI
+  instructional: "border-violet-300", // EVA type
+  pedagogical: "border-sky-300", // Audience
+};
+
 /** Búsqueda simple por título/desc/tags */
 function matchesQuery(q: string, p: AnyPattern) {
-  if (!q) return true;
-  const needle = q.toLowerCase();
+  const needle = q.trim().toLowerCase();
+  if (!needle) return true;
   return (
     p.title.toLowerCase().includes(needle) ||
     p.description.toLowerCase().includes(needle) ||
@@ -85,7 +109,7 @@ export default function PatternRepository() {
   const data = patterns as PatternRepositoryData; // asume que tu data sigue el modelo
   const uiSubcats = Object.keys(data.ui) as UISubcategory[];
 
-  const [tab, setTab] = useState("ui");
+  const [tab, setTab] = useState<"ui" | "instructional" | "pedagogical">("ui");
   const [query, setQuery] = useState("");
 
   // Estado del modal de ejemplo
@@ -115,24 +139,26 @@ export default function PatternRepository() {
 
   return (
     <div className="container mx-auto px-4 py-8 space-y-6">
-      <header>
-        <h1 className="text-3xl font-bold mb-2">Pattern Repository</h1>
-        <p className="text-muted-foreground mb-4">
-          UI, instructional, and pedagogical patterns. Click “Ver ejemplo” to preview a pattern demo.
+      <header className="space-y-3">
+        <h1 className="text-3xl font-bold mb-1">Pattern Repository</h1>
+        <p className="text-muted-foreground mb-2">
+          UI, instructional y pedagogical patterns para apoyar el diseño de EVAs. Filtra por
+          categoría, busca por título o tag y abre ejemplos interactivos cuando estén
+          disponibles.
         </p>
         <div className="relative max-w-md">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <Input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             className="pl-10"
-            placeholder="Search by title or tag…"
+            placeholder="Search by title, description or tag…"
             aria-label="Search patterns"
           />
         </div>
       </header>
 
-      <Tabs value={tab} onValueChange={(v) => setTab(v)} className="space-y-6">
+      <Tabs value={tab} onValueChange={(v) => setTab(v as typeof tab)} className="space-y-6">
         <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="ui">UI</TabsTrigger>
           <TabsTrigger value="instructional">Instructional</TabsTrigger>
@@ -149,7 +175,10 @@ export default function PatternRepository() {
                 <h2 className="text-xl font-semibold">{subcat}</h2>
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {list.map((p) => (
-                    <Card key={p.id} className="h-full hover:shadow-md transition-shadow">
+                    <Card
+                      key={p.id}
+                      className={`h-full hover:shadow-md transition-shadow border-2 ${PATTERN_BORDER_CLASSES[p.type]}`}
+                    >
                       <CardHeader>
                         <div className="flex items-start justify-between gap-3">
                           <CardTitle className="text-lg">{p.title}</CardTitle>
@@ -161,8 +190,8 @@ export default function PatternRepository() {
                         {!!p.tags?.length && (
                           <div className="flex gap-2 flex-wrap">
                             {p.tags.map((t) => (
-                              <Badge key={t} variant="outline">
-                                #{t}
+                              <Badge key={t} variant="secondary">
+                                {t}
                               </Badge>
                             ))}
                           </div>
@@ -171,7 +200,6 @@ export default function PatternRepository() {
                       <CardContent className="space-y-4">
                         <CardDescription>{p.description}</CardDescription>
 
-                        {/* Botón para abrir el ejemplo (si hay exampleId) */}
                         {p.exampleId ? (
                           <div>
                             <Button size="sm" onClick={() => openExample(p)}>
@@ -180,10 +208,32 @@ export default function PatternRepository() {
                             </Button>
                           </div>
                         ) : (
-                          <div className="text-xs text-muted-foreground">Sin ejemplo aún.</div>
+                          <div className="text-xs text-muted-foreground">
+                            Sin ejemplo aún.
+                          </div>
                         )}
 
-                        {/* (El render de relationships fue retirado a tu pedido) */}
+                        {p.sources && p.sources.length > 0 && (
+                          <div className="space-y-1">
+                            <p className="text-xs font-medium text-muted-foreground">
+                              Sources
+                            </p>
+                            <ul className="text-xs list-disc ml-4 space-y-0.5">
+                              {p.sources.map((s) => (
+                                <li key={s.url}>
+                                  <a
+                                    href={s.url}
+                                    className="underline underline-offset-2 hover:text-primary"
+                                    target="_blank"
+                                    rel="noreferrer"
+                                  >
+                                    {s.title}
+                                  </a>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
                       </CardContent>
                     </Card>
                   ))}
@@ -197,7 +247,10 @@ export default function PatternRepository() {
         <TabsContent value="instructional">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
             {filtered.instructional.map((p) => (
-              <Card key={p.id} className="h-full hover:shadow-md transition-shadow">
+              <Card
+                key={p.id}
+                className={`h-full hover:shadow-md transition-shadow border-2 ${PATTERN_BORDER_CLASSES[p.type]}`}
+              >
                 <CardHeader>
                   <div className="flex items-start justify-between gap-3">
                     <CardTitle className="text-lg">{p.title}</CardTitle>
@@ -209,8 +262,8 @@ export default function PatternRepository() {
                   {!!p.tags?.length && (
                     <div className="flex gap-2 flex-wrap">
                       {p.tags.map((t) => (
-                        <Badge key={t} variant="outline">
-                          #{t}
+                        <Badge key={t} variant="secondary">
+                          {t}
                         </Badge>
                       ))}
                     </div>
@@ -228,6 +281,26 @@ export default function PatternRepository() {
                     </div>
                   ) : (
                     <div className="text-xs text-muted-foreground">Sin ejemplo aún.</div>
+                  )}
+
+                  {p.sources && p.sources.length > 0 && (
+                    <div className="space-y-1">
+                      <p className="text-xs font-medium text-muted-foreground">Sources</p>
+                      <ul className="text-xs list-disc ml-4 space-y-0.5">
+                        {p.sources.map((s) => (
+                          <li key={s.url}>
+                            <a
+                              href={s.url}
+                              className="underline underline-offset-2 hover:text-primary"
+                              target="_blank"
+                              rel="noreferrer"
+                            >
+                              {s.title}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   )}
                 </CardContent>
               </Card>
@@ -239,7 +312,10 @@ export default function PatternRepository() {
         <TabsContent value="pedagogical">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
             {filtered.pedagogical.map((p) => (
-              <Card key={p.id} className="h-full hover:shadow-md transition-shadow">
+              <Card
+                key={p.id}
+                className={`h-full hover:shadow-md transition-shadow border-2 ${PATTERN_BORDER_CLASSES[p.type]}`}
+              >
                 <CardHeader>
                   <div className="flex items-start justify-between gap-3">
                     <CardTitle className="text-lg">{p.title}</CardTitle>
@@ -251,8 +327,8 @@ export default function PatternRepository() {
                   {!!p.tags?.length && (
                     <div className="flex gap-2 flex-wrap">
                       {p.tags.map((t) => (
-                        <Badge key={t} variant="outline">
-                          #{t}
+                        <Badge key={t} variant="secondary">
+                          {t}
                         </Badge>
                       ))}
                     </div>
@@ -270,6 +346,26 @@ export default function PatternRepository() {
                     </div>
                   ) : (
                     <div className="text-xs text-muted-foreground">Sin ejemplo aún.</div>
+                  )}
+
+                  {p.sources && p.sources.length > 0 && (
+                    <div className="space-y-1">
+                      <p className="text-xs font-medium text-muted-foreground">Sources</p>
+                      <ul className="text-xs list-disc ml-4 space-y-0.5">
+                        {p.sources.map((s) => (
+                          <li key={s.url}>
+                            <a
+                              href={s.url}
+                              className="underline underline-offset-2 hover:text-primary"
+                              target="_blank"
+                              rel="noreferrer"
+                            >
+                              {s.title}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   )}
                 </CardContent>
               </Card>

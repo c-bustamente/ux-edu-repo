@@ -210,7 +210,7 @@ const templates: Template[] = [
     format: "Figma",
     downloads: 2450,
     tags: ["mobile", "wireframes", "components"],
-    href: "/resources/templates/mobile-wireframes",
+    href: "https://www.figma.com/community?tab=files&query=mobile%20wireframe",
   },
   {
     name: "Dashboard UI Kit",
@@ -219,7 +219,7 @@ const templates: Template[] = [
     format: "Figma / Sketch",
     downloads: 1890,
     tags: ["dashboard", "admin", "charts"],
-    href: "/resources/templates/dashboard-kit",
+    href: "https://www.figma.com/community?tab=files&query=dashboard%20ui%20kit",
   },
   {
     name: "Learning Platform Landing Page",
@@ -229,7 +229,7 @@ const templates: Template[] = [
     format: "Figma",
     downloads: 1320,
     tags: ["landing-page", "education", "responsive"],
-    href: "/resources/templates/e-learning-landing",
+    href: "https://www.figma.com/community?tab=files&query=e-learning%20landing%20page",
   },
   {
     name: "UX Research Plan",
@@ -238,7 +238,7 @@ const templates: Template[] = [
     format: "Notion / Docs",
     downloads: 980,
     tags: ["research", "eva", "planning"],
-    href: "/resources/templates/ux-research-plan",
+    href: "https://www.notion.so/templates/search?query=ux%20research%20plan",
   },
 ];
 
@@ -671,7 +671,7 @@ export function TechnicalResources() {
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between mb-6">
         <div>
           <h1 className="text-2xl md:text-3xl font-bold tracking-tight">
-            Technical resources
+            Technical resources & e-learning platforms
           </h1>
           <p className="text-sm md:text-base text-muted-foreground max-w-2xl">
             A curated toolbox for UX, instructional design and virtual learning environments
@@ -803,7 +803,7 @@ export function TechnicalResources() {
                       variant="outline"
                       className="w-full justify-center gap-2 mt-1"
                     >
-                      <a href={template.href}>
+                      <a href={template.href} target="_blank" rel="noreferrer">
                         <FileText className="h-4 w-4" />
                         Open template
                       </a>
@@ -919,19 +919,18 @@ export function TechnicalResources() {
           </section>
         </TabsContent>
 
-        {/* E-learning platforms tab (with pastel oval description) */}
+        {/* E-learning platforms tab */}
         <TabsContent value="elearning" className="space-y-5">
           <div className="space-y-3">
             <h2 className="text-xl font-semibold flex items-center gap-2">
               <GraduationCap className="h-5 w-5 text-emerald-600" />
               E-learning platforms (LMS & course platforms)
             </h2>
-           <p className="text-sm text-muted-foreground max-w-2xl">
-            Platforms recommended in specialised reviews (EvolMind &amp; Comparapps) for
-            delivering online courses and EVAs. Use the filters to focus on universities,
-            organisations or independent course creators.
-          </p>
-
+            <p className="text-sm text-muted-foreground max-w-2xl">
+              Platforms recommended in specialised reviews (EvolMind &amp; Comparapps) for
+              delivering online courses and EVAs. Use the filters to focus on universities,
+              organisations or independent course creators.
+            </p>
           </div>
 
           <div className="flex flex-wrap gap-2">

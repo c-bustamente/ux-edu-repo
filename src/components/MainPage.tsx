@@ -29,13 +29,6 @@ export function MainPage() {
       color: "text-purple-600",
     },
     {
-      href: "/community",
-      icon: Users,
-      title: "Community Hub",
-      description: "Connect with other designers, share insights, and learn together.",
-      color: "text-orange-600",
-    },
-    {
       href: "/resources",
       icon: Wrench,
       title: "Technical Resources",
@@ -61,18 +54,11 @@ export function MainPage() {
               Start Learning
             </Button>
           </Link>
-
-          <Link href="/community">
-            <Button variant="outline" size="lg">
-              <Users className="mr-2 h-5 w-5" />
-              Join Community
-            </Button>
-          </Link>
         </div>
       </div>
 
       {/* Features Grid */}
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+      <div className="grid md:grid-cols-2 lg:grid-cols- gap-6 mb-12">
         {features.map((feature) => (
           <Link href={feature.href} key={feature.href}>
             <Card className="cursor-pointer hover:shadow-lg transition-shadow">
@@ -93,16 +79,16 @@ export function MainPage() {
       {/* Quick Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div className="text-center p-4">
-          <div className="text-3xl font-bold text-primary">50+</div>
+          <div className="text-3xl font-bold text-primary">30+</div>
           <div className="text-sm text-muted-foreground">UX Principles</div>
         </div>
         <div className="text-center p-4">
-          <div className="text-3xl font-bold text-primary">200+</div>
+          <div className="text-3xl font-bold text-primary">50+</div>
           <div className="text-sm text-muted-foreground">Design Patterns</div>
         </div>
         <div className="text-center p-4">
-          <div className="text-3xl font-bold text-primary">1,000+</div>
-          <div className="text-sm text-muted-foreground">Community Members</div>
+          <div className="text-3xl font-bold text-primary">100+</div>
+          <div className="text-sm text-muted-foreground">Recommendations</div>
         </div>
         <div className="text-center p-4">
           <div className="text-3xl font-bold text-primary">30+</div>

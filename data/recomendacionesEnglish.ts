@@ -464,7 +464,7 @@ export const RECOMMENDATIONS_EVA: RecommendationEntry[] = [
     },
     sources: [
       {
-        title: "3 Biggest Benefits of SCORM in eLearning Content",
+        title: "Analysis of the accessibility of selected massive open online courses (MOOCs) for users with disabilities",
         authors: "Królak, A.",
         venue: "SpringerLink",
         quote:

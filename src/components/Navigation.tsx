@@ -13,7 +13,6 @@ export function Navigation() {
     { href: "/principles", label: "UX Principles" },
     { href: "/patterns", label: "Pattern Repository" },
     { href: "/generator", label: "Recommendations" },
-    { href: "/community", label: "Community" },
     { href: "/resources", label: "Technical Resources" },
   ];
 
