@@ -46,15 +46,6 @@ export function MainPage() {
           Your comprehensive platform for learning and mastering user experience design for educational purposes.
           Explore principles, patterns, and best practices that will elevate your design skills.
         </p>
-
-        <div className="flex gap-4 justify-center">
-          <Link href="/principles">
-            <Button size="lg">
-              <Lightbulb className="mr-2 h-5 w-5" />
-              Start Learning
-            </Button>
-          </Link>
-        </div>
       </div>
 
       {/* Features Grid */}

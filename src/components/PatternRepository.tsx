@@ -10,7 +10,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { patterns } from "./patternRepo"; // <-- tu data (debe tener exampleId cuando corresponda)
+import { patterns } from "./patternRepo"; // <-(debe tener exampleId cuando corresponda)
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "./ui/tabs";
 import { Card, CardHeader, CardContent, CardTitle, CardDescription } from "./ui/card";
 import { Badge } from "./ui/badge";
@@ -142,9 +142,7 @@ export default function PatternRepository() {
       <header className="space-y-3">
         <h1 className="text-3xl font-bold mb-1">Pattern Repository</h1>
         <p className="text-muted-foreground mb-2">
-          UI, instructional y pedagogical patterns para apoyar el diseño de EVAs. Filtra por
-          categoría, busca por título o tag y abre ejemplos interactivos cuando estén
-          disponibles.
+          UI, instructional, and pedagogical patterns to support EVA's course design. Filter by category, search by title or tag, and open interactive examples
         </p>
         <div className="relative max-w-md">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
@@ -204,12 +202,12 @@ export default function PatternRepository() {
                           <div>
                             <Button size="sm" onClick={() => openExample(p)}>
                               <Play className="w-4 h-4 mr-1" />
-                              Ver ejemplo
+                              Example
                             </Button>
                           </div>
                         ) : (
                           <div className="text-xs text-muted-foreground">
-                            Sin ejemplo aún.
+                            No example yet.
                           </div>
                         )}
 
@@ -276,11 +274,11 @@ export default function PatternRepository() {
                     <div>
                       <Button size="sm" onClick={() => openExample(p)}>
                         <Play className="w-4 h-4 mr-1" />
-                        Ver ejemplo
+                        Example
                       </Button>
                     </div>
                   ) : (
-                    <div className="text-xs text-muted-foreground">Sin ejemplo aún.</div>
+                    <div className="text-xs text-muted-foreground">No Example yet.</div>
                   )}
 
                   {p.sources && p.sources.length > 0 && (
@@ -341,11 +339,11 @@ export default function PatternRepository() {
                     <div>
                       <Button size="sm" onClick={() => openExample(p)}>
                         <Play className="w-4 h-4 mr-1" />
-                        Ver ejemplo
+                        Example
                       </Button>
                     </div>
                   ) : (
-                    <div className="text-xs text-muted-foreground">Sin ejemplo aún.</div>
+                    <div className="text-xs text-muted-foreground">No Example yet.</div>
                   )}
 
                   {p.sources && p.sources.length > 0 && (
@@ -378,14 +376,14 @@ export default function PatternRepository() {
       <Dialog open={!!openExampleId} onOpenChange={(open) => !open && setOpenExampleId(null)}>
         <DialogContent className="max-w-2xl">
           <DialogHeader>
-            <DialogTitle>Ejemplo — {openExampleTitle || "Patrón"}</DialogTitle>
-            <DialogDescription>Vista previa del patrón en uso.</DialogDescription>
+            <DialogTitle>Example — {openExampleTitle || "Patrón"}</DialogTitle>
+            <DialogDescription>Preview of Pattern in Use.</DialogDescription>
           </DialogHeader>
           <div className="mt-2">
             {ExampleCmp ? (
               <ExampleCmp />
             ) : (
-              <p className="text-sm text-muted-foreground">Ejemplo no disponible.</p>
+              <p className="text-sm text-muted-foreground">No example yet.</p>
             )}
           </div>
         </DialogContent>
